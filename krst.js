@@ -1,15 +1,16 @@
-var gfeed = require('google-feed-api');
+var feedread = require('feed-read');
 var today = new Date().toISOString().slice(0,10)
-var feed = new gfeed.Feed('http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/'+today+'.rss');
+var feed = "http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/"+today+".rss";
 
 
-feed.listItems(function(items){
-    console.log("=== Classic Kött ===");
-    console.log(items[0].contentSnippet);
 
-    console.log("=== Classic Fisk ===");
-    console.log(items[2].contentSnippet);
-
-    console.log("=== Soppa ===");
-    console.log(items[3].contentSnippet);
+feedread(feed, function(err, articles){
+	var prev = "first"; 
+	for(var i = 0; i < articles.length; i++){
+		if(articles[i].title !== prev || prev === "first"){
+			console.log("=== " + articles[i].title + " ===");
+			console.log(articles[i].content.slice(0,articles[i].content.indexOf("@")))
+		}
+		prev = articles[i].title;
+	}
 });
