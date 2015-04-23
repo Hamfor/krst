@@ -2,8 +2,6 @@ var feedread = require('feed-read');
 var today = new Date().toISOString().slice(0,10)
 var feed = "http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/"+today+".rss";
 
-
-
 feedread(feed, function(err, articles){
 	var prev = "first"; 
 	for(var i = 0; i < articles.length; i++){
@@ -11,6 +9,7 @@ feedread(feed, function(err, articles){
 			console.log("=== " + articles[i].title + " ===");
 			console.log(articles[i].content.slice(0,articles[i].content.indexOf("@")))
 		}
+		//Skips duplicates, i.e. english translations
 		prev = articles[i].title;
 	}
 });
